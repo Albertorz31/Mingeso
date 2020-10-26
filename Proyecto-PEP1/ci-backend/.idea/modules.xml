@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CIBackend/CIBackend.iml" filepath="$PROJECT_DIR$/CIBackend/CIBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/ci-backend.iml" filepath="$PROJECT_DIR$/.idea/ci-backend.iml" />
+    </modules>
+  </component>
+</project>

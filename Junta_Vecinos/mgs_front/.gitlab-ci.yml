@@ -1,0 +1,38 @@
+stages:
+  - build
+  #- test
+  - deploy
+
+build-front:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  only:
+    - master
+  script:
+    - echo "Deploying frontend"
+    - docker build --file=Documentacion/Dockerfile -t web-frontend .
+
+#unit test:
+#  image: node:12.18.0
+#  stage: test
+#  script:
+#    - npm install --progress=false
+#    - npm run unit
+
+deploy-front:
+  stage: deploy
+  script:
+    - cd Documentacion
+    - docker-compose -f docker-compose.yml up -d
+    - echo "Frontend Deployment"
+  environment: master
+  only:
+    - master
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+stages:
+    - build
+    - deploy
+    
+Build-Front:
+    stage: build
+    image: docker:latest
+    services:
+        - docker:dind
+    only:
+        - master
+    script:
+        - echo "Deploying frontend"
+        - docker build --file=Documentacion/Dockerfile  -t web-frontend .
+        
+        
+        
+Deploy-Front:
+    stage: deploy
+    script:
+        - cd Documentacion
+        - docker-compose -f docker-compose.yml up -d
+        - echo "Frontend Deployment"
+    environment: master
+    only: 
+        - master
+    

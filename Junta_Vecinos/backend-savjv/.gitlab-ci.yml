@@ -1,0 +1,53 @@
+stages:
+    - build
+    - test
+    - deploy
+
+Build-Back:
+    stage: build
+    image: maven:3.6.3-jdk-11
+    script:
+        - echo "Building Backend"
+        - mvn clean install
+        - docker build -f Dockerfile -t web-backend .
+        - echo "Backend build complete"
+    only:
+        - master
+
+Test-Junit:
+    stage: test
+    image: maven:3.6.3-jdk-11
+    script:
+        - mvn test
+    only:
+        - master
+    artifacts:
+        reports:
+            junit:
+                - target/surefire-reports/TEST-*.xml
+
+Test-sonar:
+    stage: test
+    image: docker:latest
+    script:
+        - mvn clean verify
+        - mvn sonar:sonar
+            -Dsonar.projectKey=Grupo3:ASJV.backend
+            -Dsonar.host.url=http://167.99.3.150:9000
+            -Dsonar.login=ca2d06c760b581f9303b511d8669b36c8a3445a5
+    only:
+        - master
+
+
+Deploy-Back:
+    stage: deploy
+    image: docker:latest
+    services:
+        - docker:dind
+    only:
+        - master
+    script:
+        - echo "Deploying Backend"
+        - cd Documentacion
+        - docker-compose -f docker-compose.yml up -d
+        - echo "Backend deployment complete"
